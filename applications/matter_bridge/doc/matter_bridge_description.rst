@@ -103,6 +103,10 @@ For information about how to upgrade the device firmware using a PC or a smartph
 
 .. _matter_bridge_app_bridged_support:
 
+There is an additional functionality, which allows the Matter bridge device to work as a smart plug device.
+Thanks to it, you can integrate the Matter bridge functionality in a real end product, like smart plug, and do not have to make a bridge device work as a standalone device, which is much less attractive option.
+It is an optional feature, and can be enabled by passing below building commands.
+
 Bridged device support
 ======================
 
@@ -140,6 +144,9 @@ User interface
 Button 1:
    .. include:: /includes/matter_sample_button.txt
 
+Button 2:
+   In case the Matter smart plug functionality is used, you can change the state of smart plug device by pressing it.
+
 LED 1:
    .. include:: /includes/matter_sample_state_led.txt
 
@@ -152,6 +159,8 @@ LED 2:
    * Slow Even Flashing (1000 ms on / 1000 ms off) - The Bridge device lost connection to at least one Bluetooth LE bridged device.
    * Even Flashing (300 ms on / 300 ms off) - The scan for Bluetooth LE devices is in progress.
    * Fast Even Flashing (100 ms on / 100 ms off) - The Bridge device is connecting to the Bluetooth LE device and waiting for the Bluetooth LE authentication PIN code.
+
+   If we are using extend functionality, it shows state of the smart plug device.
 
 .. include:: /includes/matter_segger_usb.txt
 
@@ -603,7 +612,40 @@ Selecting a configuration
 Before you start testing the application, you can select one of the :ref:`matter_bridge_app_custom_configs`.
 See :ref:`app_build_file_suffixes` and :ref:`cmake_options` for more information how to select a configuration.
 
+Configure the functionality of the Matter-Bridge device
+-------------------------------------------------------
+
 .. _matter_bridge_testing:
+
+To use the basic functionality of the device, use the following command to build.
+
+``nrf54h20dk/nrf54h20/cpuapp``
+
+.. code-block:: console
+
+   west build -b nrf54h20dk/nrf54h20/cpuapp -p -- -DSB_CONFIG_WIFI_NRF700X=y -DCONFIG_CHIP_WIFI=y -Dmatter_bridge_SHIELD=nrf700x_nrf54h20dk -DCONFIG_BRIDGED_DEVICE_BT=y
+
+``nrf7002dk/nrf5340/cpuapp``
+
+.. code-block:: console
+
+   west build -b nrf7002dk/nrf5340/cpuapp -p -- -DCONFIG_BRIDGED_DEVICE_BT=y
+
+
+To configure the Matter smart plug functionality, run the following command:
+
+``nrf54h20dk/nrf54h20/cpuapp``
+
+.. code-block:: console
+
+   west build -b nrf54h20dk/nrf54h20/cpuapp -p -- -DSB_CONFIG_WIFI_NRF700X=y -DCONFIG_CHIP_WIFI=y -Dmatter_bridge_SHIELD=nrf700x_nrf54h20dk -DCONFIG_BRIDGED_DEVICE_BT=y -Dmatter_bridge_SNIPPET=onoff_plug
+
+``nrf7002dk/nrf5340/cpuapp``
+
+.. code-block:: console
+
+   west build -b nrf7002dk/nrf5340/cpuapp -p -- -DCONFIG_BRIDGED_DEVICE_BT=y -Dmatter_bridge_SNIPPET=onoff_plug
+
 
 Testing
 =======
